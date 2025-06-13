@@ -1,83 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content ="Immanuel James"> 
-    <title>Course-Compass</title>
-    <link rel="stylesheet" href="index.css"> <!-- Link to an external CSS file -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Course Compass - IIT Madras</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 2rem; max-width: 800px; margin: auto; }
+    h1, h2 { text-align: center; }
+    input, textarea, button { width: 100%; padding: 0.5rem; margin-top: 1rem; }
+    .card { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; cursor: pointer; margin-top: 1rem; }
+    .reviews { margin-top: 1rem; }
+    .reviews ul { padding-left: 1rem; list-style: disc; }
+  </style>
 </head>
 <body>
-    <header>
-        <h1><a href = "main.html"> Course-Compass </a></h1>
-        <nav>
-            <ul>
-                <li><a href="#about">About</a>
-                    <ul class="dropdown">
-                        <li><a href="about.html">General Info</a></li>
-                        <li><a href="contri.html">Contributions</a></li>
-                    </ul>
-                </li>
-                <li><a  href="#depts">Departments</a>
-                    <ul class="dropdown" >
-                        <li><a href="#aero">Aerospace</a></li>
-                        <li><a href="#bio">Biotech</a></li>
-                        <li><a href="#chem">Chemical</a></li>
-                        <li><a href="#civil">Civil</a></li>
-                        <li><a href="#cs">Computer Science</a></li>
-                        <li><a href="#elec">Electrical</a></li>
-                        <li><a href="#mech">Mechanical</a></li>
-                        <li><a href="#meta">Metallurgy</a></li>
-                        <li><a href="#naval">Naval</a></li>
-                        <li><a href="#ep">Engineering Physics</a></li>
-                    </ul>
-                
-                </li>
-                <li><a href="#profs">Professors</a>
-                    <ul class="dropdown" >
-                        <li><a href="#aero">Aerospace</a></li>
-                        <li><a href="#bio">Biotech</a></li>
-                        <li><a href="#chem">Chemical  </a></li>
-                        <li><a href="#civil">Civil</a></li>
-                        <li><a href="#cs">Computer Science</a></li>
-                        <li><a href="#elec">Electrical</a></li>
-                        <li><a href="#mech">Mechanical</a></li>
-                        <li><a href="#meta">Metallurgy</a></li>
-                        <li><a href="#naval">Naval</a></li>
-                        <li><a href="#ep">Engineering Physics</a></li>
-                    </ul>
+  <h1>Course Compass - IIT Madras</h1>
+  <p style="text-align:center;">This website helps students of IIT Madras make informed decisions about their courses and professors. Explore detailed information on courses, and read or contribute reviews and feedback shared by fellow students.</p>
 
-                
-                
-                </li>
-                <li><a href="#login">Login</a>
-                    <ul class="dropdown">
-                        <li><a href="#log-in">Log-in</a></li>
-                        <li><a href="#cg-pred">CG-Predictor</a></li>
-                    </ul>
-                                
-                </li>
-            </ul>
-        </nav>
-    </header>
+  <input type="text" id="search" placeholder="Search by course code, name or professor..." />
+  <div id="courseList"></div>
 
-    <main>
-        <section>
-            <h2> Contributions</h2>
-            <p>
-                 My sincere thanks to the following for helping build this website:
-                 <ol>
-                    The admin and members of the "Electives Discussion " Whatsapp group.  
-                 </ol>
-            </p>
-            
-        </section>
-    </main>
+  <div id="courseDetail" style="display:none; margin-top: 2rem;">
+    <h2 id="courseTitle"></h2>
+    <p id="professor"></p>
+    <div class="reviews">
+      <h3>Student Reviews:</h3>
+      <ul id="reviewList"></ul>
+      <textarea id="newReview" placeholder="Add your review..."></textarea>
+      <button onclick="submitReview()">Submit Review</button>
+    </div>
+  </div>
 
-    <footer>
-        <p>Made by Pegasus_313 <a href = "https://www.linkedin.com/in/immanuel-james-683a41254"> Linkedin</a> <a href="mailto:ae22b033@smail.iitm.ac.in"> ae22b033@smail.iitm.ac.in </a> </p>
-    </footer>
+  <script>
+    const courses = [
+      { id: 1, code: "AE2001", name: "Fluid Mechanics", professor: "Dr. Ramesh", reviews: ["Great teaching", "Clear concepts"] },
+      { id: 2, code: "CS1100", name: "Introduction to Programming", professor: "Prof. Priya", reviews: ["Hands-on approach", "Challenging assignments"] },
+    ];
 
-    <script src = "index.js"></script> 
+    let selectedCourse = null;
+
+    const searchInput = document.getElementById("search");
+    const courseListDiv = document.getElementById("courseList");
+    const courseDetail = document.getElementById("courseDetail");
+    const courseTitle = document.getElementById("courseTitle");
+    const professorText = document.getElementById("professor");
+    const reviewList = document.getElementById("reviewList");
+    const newReviewInput = document.getElementById("newReview");
+
+    function renderCourseList() {
+      const search = searchInput.value.toLowerCase();
+      courseListDiv.innerHTML = "";
+      courses.filter(c =>
+        c.name.toLowerCase().includes(search) ||
+        c.code.toLowerCase().includes(search) ||
+        c.professor.toLowerCase().includes(search)
+      ).forEach(course => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.textContent = `${course.code}: ${course.name} (Prof. ${course.professor})`;
+        div.onclick = () => showCourse(course);
+        courseListDiv.appendChild(div);
+      });
+    }
+
+    function showCourse(course) {
+      selectedCourse = course;
+      courseTitle.textContent = `${course.code} - ${course.name}`;
+      professorText.textContent = `Instructor: ${course.professor}`;
+      renderReviews();
+      courseDetail.style.display = "block";
+    }
+
+    function renderReviews() {
+      reviewList.innerHTML = "";
+      selectedCourse.reviews.forEach(review => {
+        const li = document.createElement("li");
+        li.textContent = review;
+        reviewList.appendChild(li);
+      });
+    }
+
+    function submitReview() {
+      const text = newReviewInput.value.trim();
+      if (text) {
+        selectedCourse.reviews.push(text);
+        newReviewInput.value = "";
+        renderReviews();
+      }
+    }
+
+    searchInput.addEventListener("input", renderCourseList);
+    renderCourseList();
+  </script>
 </body>
 </html>
