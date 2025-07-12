@@ -117,3 +117,5 @@ Thumbs.db
 
 # Local development files
 .env.example
+
+.vercel
