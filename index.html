@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Compass - IIT Madras</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div>
+                    <h1 class="header-title">Course Compass</h1>
+                    <p class="header-subtitle">IIT Madras - Make informed decisions about your courses and professors</p>
+                </div>
+                <div class="header-icon">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container main-content">
+        <!-- Course List View -->
+        <div id="courseListView" class="course-list-view">
+            <!-- Search and Filters -->
+            <div class="search-filters">
+                <div class="search-container">
+                    <div class="search-icon">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search courses, professors, or course codes...">
+                </div>
+
+                <div class="filters-container">
+                    <button id="filterToggle" class="filter-btn">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                        </svg>
+                        <span>Filters</span>
+                    </button>
+
+                    <div id="filterPanel" class="filter-panel hidden">
+                        <div class="filter-group">
+                            <label class="filter-label">Department</label>
+                            <select id="departmentFilter" class="filter-select">
+                                <option value="All Departments">All Departments</option>
+                                <option value="Aerospace Engineering">Aerospace Engineering</option>
+                                <option value="Computer Science and Engineering">Computer Science and Engineering</option>
+                                <option value="Electrical Engineering">Electrical Engineering</option>
+                                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                <option value="Civil Engineering">Civil Engineering</option>
+                                <option value="Chemical Engineering">Chemical Engineering</option>
+                                <option value="Physics">Physics</option>
+                                <option value="Mathematics">Mathematics</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">Sort By</label>
+                            <select id="sortFilter" class="filter-select">
+                                <option value="name">Course Name</option>
+                                <option value="rating">Rating</option>
+                                <option value="difficulty">Difficulty</option>
+                                <option value="workload">Workload</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Course Grid -->
+            <div id="courseGrid" class="course-grid">
+                <!-- Courses will be dynamically inserted here -->
+            </div>
+
+            <!-- No Results Message -->
+            <div id="noResults" class="no-results hidden">
+                <div class="no-results-icon">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                </div>
+                <h3 class="no-results-title">No courses found</h3>
+                <p class="no-results-text">Try adjusting your search or filters to find what you're looking for.</p>
+            </div>
+        </div>
+
+        <!-- Course Detail View -->
+        <div id="courseDetailView" class="course-detail-view hidden">
+            <button id="backButton" class="back-btn">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                <span>Back to Courses</span>
+            </button>
+
+            <div class="course-detail-card">
+                <div class="course-detail-grid">
+                    <div class="course-info">
+                        <div class="course-header">
+                            <div>
+                                <h2 id="courseName" class="course-title"></h2>
+                                <p id="courseCode" class="course-code"></p>
+                            </div>
+                            <div class="course-rating">
+                                <div id="courseStars" class="stars"></div>
+                                <p id="courseRatingText" class="rating-text"></p>
+                            </div>
+                        </div>
+
+                        <div class="course-meta">
+                            <div class="meta-item">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                <span id="courseProfessor"></span>
+                            </div>
+                            <div class="meta-item">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                </svg>
+                                <span id="courseDepartment"></span>
+                            </div>
+                            <div class="meta-item">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                <span id="courseSemester"></span>
+                            </div>
+                            <div class="meta-item">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span id="courseCredits"></span>
+                            </div>
+                        </div>
+
+                        <div class="course-description">
+                            <p id="courseDescription"></p>
+                        </div>
+
+                        <div class="course-metrics">
+                            <div id="courseDifficulty" class="metric-bar"></div>
+                            <div id="courseWorkload" class="metric-bar"></div>
+                        </div>
+                    </div>
+
+                    <div class="course-reviews">
+                        <h3 class="reviews-title">Reviews</h3>
+                        <div id="reviewsList" class="reviews-list">
+                            <!-- Reviews will be dynamically inserted here -->
+                        </div>
+
+                        <div class="add-review">
+                            <h4 class="add-review-title">Add Your Review</h4>
+                            <div class="review-form">
+                                <div class="form-group">
+                                    <label class="form-label">Rating</label>
+                                    <div id="ratingStars" class="rating-stars">
+                                        <!-- Rating stars will be dynamically inserted here -->
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Your Name</label>
+                                    <input type="text" id="reviewAuthor" class="form-input" placeholder="Enter your name">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Review</label>
+                                    <textarea id="reviewComment" class="form-textarea" rows="3" placeholder="Share your experience with this course..."></textarea>
+                                </div>
+                                <button id="submitReview" class="submit-btn">Submit Review</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
